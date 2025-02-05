@@ -7,10 +7,4 @@ if status is-interactive
     alias Tarzan="cd ~/workspace/Tarzan_ws"
     alias config="/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME"
 end
-# shortcut to open tarzan workspace in kitty
-function tarzan 
-	cd ~/workspace/Tarzan_ws
-	kitty @ launch --type=tab --cwd=~/workspace/Tarzan_ws/Tarzan
-	kitty @ launch --type=tab 
-end
 
