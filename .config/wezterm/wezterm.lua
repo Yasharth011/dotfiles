@@ -6,13 +6,12 @@ local config = wezterm.config_builder()
 config.color_scheme = "Tango"
 
 -- Set font and font size
-config.font = wezterm.font("Iosevka") -- { weight = "Bold" })
+config.font = wezterm.font("JetBrains", { weight = "bold" })
 config.font_size = 11
 
 -- Enable the status bar
-config.enable_tab_bar = true
-config.use_fancy_tab_bar = true
-config.tab_bar_at_bottom = true -- Place the tab bar at the bottom
+config.enable_tab_bar = false
+config.use_fancy_tab_bar = false
 
 -- Customize tab bar appearance
 config.tab_max_width = 20 -- Set a maximum width for tab titles
