@@ -2,15 +2,14 @@ local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
--- Set color scheme
-config.color_scheme = "Tango"
+config.color_scheme = "Catppuccin Mocha"
 
 -- Set font and font size
-config.font = wezterm.font("JetBrains", { weight = "bold" })
+config.font = wezterm.font("JetBrains Mono")
 config.font_size = 11
 
 -- Enable the status bar
-config.enable_tab_bar = false
+config.enable_tab_bar = true
 config.use_fancy_tab_bar = false
 
 -- Customize tab bar appearance
@@ -37,5 +36,33 @@ config.keys = {
 	-- Reload Configuration
 	{ key = "r", mods = "CTRL|SHIFT", action = wezterm.action.ReloadConfiguration },
 }
+
+-- tab bar
+wezterm.plugin.require("https://github.com/nekowinston/wezterm-bar").apply_to_config(config, {
+	position = "bottom",
+	max_width = 32,
+	dividers = "slant_right", -- or "slant_left", "arrows", "rounded", false
+	indicator = {
+		leader = {
+			enabled = true,
+		},
+		mode = {
+			enabled = true,
+			names = {
+				resize_mode = "resize",
+				copy_mode = "visual",
+				search_mode = "search",
+			},
+		},
+	},
+	tabs = {
+		numerals = "arabic", -- or "roman"
+		pane_count = "superscript", -- or "subscript", false
+		brackets = {
+			active = { "", ":" },
+			inactive = { "", ":" },
+		},
+	},
+})
 
 return config
