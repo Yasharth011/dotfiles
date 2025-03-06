@@ -1,0 +1,34 @@
+* {
+	border: 5px;
+	border-radius: 0px;
+	font-family: "JetBrains Mono Bold";
+	font-weight: bold;
+	font-size: 12px;
+	min-height: 0px;
+	margin: 0px;
+}
+
+window#waybar {
+	background: rgba(0, 0, 0, 0.5);
+	color: #ffffff;
+}
+
+@keyframes blink {
+    to {
+        background-color: #af005f;
+    }
+}
+
+#battery.warning:not(.charging) {
+	background-color: #ff8700;
+	color: #1b1d1e;
+}
+#battery.critical:not(.charging) {
+    color: white;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
