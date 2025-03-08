@@ -8,7 +8,7 @@
 
 	"modules-center": ["clock"],
 
-	"modules-right": ["battery"],
+	"modules-right": ["backlight/slider", "battery"],
 
    	"wlr/taskbar": {
    	    "format": "{icon}",
@@ -27,22 +27,14 @@
        	        "mode": "month",
        	        "mode-mon-col": 3,
        	        "on-scroll": 1,
-       	        // "on-click-right": "mode",
        	        "format": {
        	        	 "months": "<span color='#ff0000'><b>{}</b></span>",
        	        	 "days": "<span color='#ffffff'><b>{}</b></span>",
        	        	 "weekdays": "<span color='#bbbbbb'><b>{}</b></span>",
        	        	 "today": "<span color='#ff0000'><b>{}</b></span>"
-       	     }
+       	     	}
+	    },
         },
-        "actions": {
-            "on-click-right": "mode",
-            "on-click-forward": "tz_up",
-            "on-click-backward": "tz_down",
-            "on-scroll-up": "shift_up",
-            "on-scroll-down": "shift_down"
-          }
-	},
 
 	"battery": {
 		"states": {
@@ -55,4 +47,11 @@
 		"format-icons": ["", "", "", "", ""],
 		"format-tooltip" : "{time}"
 	},
+
+	"backlight/slider": {
+   		"min": 0,
+   		"max": 100,
+   		"orientation": "horizontal",
+   		"device": "intel_backlight"
+	}
 }
