@@ -1,5 +1,6 @@
 require("themery").setup({
 	themes = {
+		"chocolatier",
 		"rose-pine",
 		"rose-pine-dawn",
 		"rose-pine-moon",
