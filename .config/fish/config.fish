@@ -6,5 +6,6 @@ if status is-interactive
     alias wezterm="flatpak run org.wezfurlong.wezterm"
     alias Tarzan="cd ~/workspace/Tarzan_ws/Tarzan"
     alias config="/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME"
+    alias gs="/usr/bin/grim -g (slurp)"
 end
 
