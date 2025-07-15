@@ -36,17 +36,6 @@
 	    },
         },
 
-	"battery": {
-		"states": {
-			"good": 95,
-			"warning": 20,
-			"critical": 10
-		},
-		"format": "<span color='#00FF00'>{icon}</span> {capacity}%",
-		"format-charging": "<span color='#e88939'> </span> {capacity}%",
-		"format-icons": ["", "", "", "", ""],
-		"format-tooltip" : "{time}"
-	},
 
 	"backlight/slider": {
    		"min": 0,
