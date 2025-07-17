@@ -5,6 +5,7 @@ require("conform").setup({
 		javascript = {"biome"},
 		-- javascript = {"biome", "prettierd", "prettier", stop_after_first = true },
 		cpp = { " clang-format --style LLVM ", "uncrustify" },
+		nix = { "nixfmt" }
 	},
 	vim.api.nvim_create_user_command("Format", function(args)
 		local range = nil
