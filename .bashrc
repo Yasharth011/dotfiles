@@ -125,3 +125,5 @@ export NVM_DIR="$HOME/.nvm"
 # export PATH="$PATH:/opt/nvim-linux65/bin"
 export PATH="$HOME/.local/bin:$PATH"
 
+eval "$(direnv hook bash)"
+
