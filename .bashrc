@@ -127,3 +127,5 @@ export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(direnv hook bash)"
 
+
+export STM32_PRG_PATH=/home/yasharth/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
