@@ -1,86 +1,111 @@
--- Reserve a space in the gutter
 vim.opt.signcolumn = "yes"
 
--- Add cmp_nvim_lsp capabilities settings to lspconfig
--- This should be executed before you configure any language server
-local lspconfig_defaults = require("lspconfig").util.default_config
-lspconfig_defaults.capabilities =
-	vim.tbl_deep_extend("force", lspconfig_defaults.capabilities, require("cmp_nvim_lsp").default_capabilities())
+-- ================================
+-- Mason setup
+-- ================================
+local mason = require("mason")
+local mason_lsp = require("mason-lspconfig")
 
--- This is where you enable features that only work
--- if there is a language server active in the file
-vim.api.nvim_create_autocmd("LspAttach", {
-	desc = "LSP actions",
-	callback = function(event)
-		local opts = { buffer = event.buf }
-
-		vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
-		vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
-		vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
-		vim.keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", opts)
-		vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
-		vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
-		vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
-		vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
-	end,
+mason.setup({
+    ui = {
+        border = "rounded",
+        icons = { package_installed = "✔", package_pending = "➜", package_uninstalled = "✗" },
+    },
+    ensure_installed = { "lua_ls", "pyright", "clangd" },
+    automatic_installation = true,
 })
 
+-- ================================
+-- Diagnostics signs
+-- ================================
+vim.diagnostic.config({
+    virtual_text = true,
+    update_in_insert = false,
+    underline = true,
+    severity_sort = true,
+    float = { border = "rounded" },
+})
+
+-- ================================
+-- nvim-cmp setup
+-- ================================
 local cmp = require("cmp")
+local cmp_lsp = require("cmp_nvim_lsp")
 
 cmp.setup({
-	sources = {
-		{ name = "nvim_lsp" },
-	},
-	snippet = {
-		expand = function(args)
-			-- You need Neovim v0.10 to use vim.snippet
-			vim.snippet.expand(args.body)
-		end,
-	},
-	mapping = cmp.mapping.preset.insert({}),
-})
-local lsp = require("lsp-zero").preset({
-	name = "minimal",
-	set_lsp_keymaps = true,
-	manage_nvim_cmp = true,
-	suggest_lsp_servers = false,
+    snippet = {
+        expand = function(args)
+	     require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    window = {
+       completion = cmp.config.window.bordered(),
+       documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+        ["<CR>"] = cmp.mapping.confirm({ select = true }),
+        ["<C-Space>"] = cmp.mapping.complete(),
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+    }, {
+      { name = 'buffer' },
+    })
+  })
+
+local capabilities = cmp_lsp.default_capabilities()
+
+-- ================================
+-- on_attach keymaps
+-- ================================
+local function on_attach(client, bufnr)
+    local opts = { buffer = bufnr }
+    local bufmap = vim.keymap.set
+
+    bufmap("n", "K", vim.lsp.buf.hover, opts)
+    bufmap("n", "gd", vim.lsp.buf.definition, opts)
+    bufmap("n", "gD", vim.lsp.buf.declaration, opts)
+    bufmap("n", "gi", vim.lsp.buf.implementation, opts)
+    bufmap("n", "go", vim.lsp.buf.type_definition, opts)
+    bufmap("n", "gr", vim.lsp.buf.references, opts)
+    bufmap("n", "gs", vim.lsp.buf.signature_help, opts)
+    bufmap({ "n", "x" }, "<F3>", function()
+        vim.lsp.buf.format({ async = true })
+    end, opts)
+end
+
+vim.api.nvim_create_autocmd("LspAttach", {
+    desc = "LSP keymaps",
+    callback = function(event)
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        on_attach(client, event.buf)
+    end,
 })
 
-lsp.setup()
+-- ================================
+-- Automatically setup and enable all Mason-installed servers
+-- ================================
+local all_servers = mason_lsp.get_installed_servers()
 
-vim.diagnostic.config({
-	virtual_text = true,
-	update_in_insert = false,
-	underline = true,
-	severity_sort = false,
-	float = true,
-	signs = {
-		text = {
-			[vim.diagnostic.severity.ERROR] = "✘",
-			[vim.diagnostic.severity.WARN] = "▲",
-			[vim.diagnostic.severity.HINT] = "⚑",
-			[vim.diagnostic.severity.INFO] = "»",
-		},
-	},
-})
-local ih = require("lsp-inlayhints")
-ih.setup()
+for _, server in ipairs(all_servers) do
+    local config = {
+        capabilities = capabilities,
+        on_attach = on_attach,
+    }
 
-require("lspconfig").lua_ls.setup({
-	on_attach = function(client, bufnr)
-		ih.on_attach(client, bufnr)
-	end,
-	settings = {
-		Lua = {
-			hint = {
-				enable = true,
-			},
-		},
-	},
-})
+    -- Optional server-specific settings
+    if server == "lua_ls" then
+        config.settings = {
+            Lua = {
+                diagnostics = { globals = { "vim" } },
+                hint = { enable = true },
+            },
+        }
+    end
 
-require("mason.settings").set({
-	ui = {
-		border = "rounded",
-	},
-})
+    -- Register and enable
+    vim.lsp.config(server, config)
+    vim.lsp.enable(server)
+end
+

@@ -6,24 +6,19 @@ return require("packer").startup(function(use)
 	use({ "rebelot/kanagawa.nvim", as = "kanagawa" })
 	use("blazkowolf/gruber-darker.nvim")
 	use({ "catppuccin/nvim", as = "catppuccin" })
-	use { "qaptoR-nvim/chocolatier.nvim" }
+	use({ "qaptoR-nvim/chocolatier.nvim" })
+	use({ "nyoom-engineering/nyoom.nvim", as = "nyoom" })
 	--
 	use({
 		"nvim-telescope/telescope.nvim",
 		tag = "0.1.8",
-		requires = { { "nvim-lua/plenary.nvim" },
-		{ "nvim-telescope/telescope-live-grep-args.nvim"} },
+		requires = { { "nvim-lua/plenary.nvim" }, { "nvim-telescope/telescope-live-grep-args.nvim" } },
 		config = function()
-    local telescope = require("telescope")
+			local telescope = require("telescope")
 
-    -- first setup telescope
-    telescope.setup({
-        -- your config
-    })
-
-    -- then load the extension
-    telescope.load_extension("live_grep_args")
-  end
+			-- then load the extension
+			telescope.load_extension("live_grep_args")
+		end,
 	})
 	--status bar
 	use("feline-nvim/feline.nvim")
@@ -32,29 +27,15 @@ return require("packer").startup(function(use)
 	-- for lua code
 	use("nvim-lua/plenary.nvim")
 	-- LSP
-	use({
-		"VonHeikemen/lsp-zero.nvim",
-		branch = "v1.x",
+	use({ "neovim/nvim-lspconfig" })
+	use({ "williamboman/mason.nvim" })
+	use({ "williamboman/mason-lspconfig.nvim" })
+	use({ "hrsh7th/nvim-cmp",
 		requires = {
-			-- LSP Support
-			{ "neovim/nvim-lspconfig" },
-			{ "williamboman/mason.nvim" },
-			{ "williamboman/mason-lspconfig.nvim" },
-			{ "lvimuser/lsp-inlayhints.nvim" },
-			-- Autocompletion
-			{ "hrsh7th/nvim-cmp" },
-			{ "hrsh7th/cmp-nvim-lsp" },
-			-- Snippets
-			{ "L3MON4D3/LuaSnip" },
-		},
-	})
-	-- formatter
-	use({
-		"stevearc/conform.nvim",
-		config = function()
-			require("conform").setup()
-		end,
-	})
+			'hrsh7th/cmp-nvim-lsp',
+			'saadparwaiz1/cmp_luasnip',
+    			'L3MON4D3/LuaSnip',
+		}})
 	-- file tree
 	use({
 		"nvim-tree/nvim-tree.lua",
