@@ -129,3 +129,5 @@ eval "$(direnv hook bash)"
 
 
 export STM32_PRG_PATH=/home/yasharth/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin
+
+export TERM=xterm-256color # use local terminal as term for ssh host machines
