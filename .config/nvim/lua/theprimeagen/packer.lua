@@ -30,12 +30,14 @@ return require("packer").startup(function(use)
 	use({ "neovim/nvim-lspconfig" })
 	use({ "williamboman/mason.nvim" })
 	use({ "williamboman/mason-lspconfig.nvim" })
-	use({ "hrsh7th/nvim-cmp",
+	use({
+		"hrsh7th/nvim-cmp",
 		requires = {
-			'hrsh7th/cmp-nvim-lsp',
-			'saadparwaiz1/cmp_luasnip',
-    			'L3MON4D3/LuaSnip',
-		}})
+			"hrsh7th/cmp-nvim-lsp",
+			"saadparwaiz1/cmp_luasnip",
+			"L3MON4D3/LuaSnip",
+		},
+	})
 	-- file tree
 	use({
 		"nvim-tree/nvim-tree.lua",
@@ -70,4 +72,18 @@ return require("packer").startup(function(use)
 	})
 	-- smooth scrolling
 	use("karb94/neoscroll.nvim")
+	-- terminal
+	use({
+		"akinsho/toggleterm.nvim",
+		tag = "*",
+		config = function()
+			require("toggleterm").setup({
+				size = 10,
+				hide_numbers = true,
+				autochdir = false,
+				close_on_exit = true,
+				auto_scroll = true,
+			})
+		end,
+	})
 end)
