@@ -27,7 +27,6 @@ return require("packer").startup(function(use)
 	-- for lua code
 	use("nvim-lua/plenary.nvim")
 	-- LSP
-	use({ "neovim/nvim-lspconfig" })
 	use({ "williamboman/mason.nvim" })
 	use({ "williamboman/mason-lspconfig.nvim" })
 	use({
@@ -38,6 +37,7 @@ return require("packer").startup(function(use)
 			"L3MON4D3/LuaSnip",
 		},
 	})
+	use({"stevearc/conform.nvim"})
 	-- file tree
 	use({
 		"nvim-tree/nvim-tree.lua",
