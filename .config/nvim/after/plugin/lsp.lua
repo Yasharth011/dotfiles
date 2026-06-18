@@ -64,9 +64,14 @@ conform.setup({
 	formatters_by_ft = {
 		python = { "black" },
 		lua = { "stylua" },
+		nix = { "alejandra" },
 	},
 })
+vim.keymap.set({ "n", "x" }, "<F3>", function()
+	require("conform").format({ async = true, lsp_fallback = true })
+end, { desc = "Format Buffer" })
 
+-- ================================
 -- on_attach keymaps
 -- ================================
 local function on_attach(client, bufnr)
@@ -80,9 +85,6 @@ local function on_attach(client, bufnr)
 	bufmap("n", "go", vim.lsp.buf.type_definition, opts)
 	bufmap("n", "gr", vim.lsp.buf.references, opts)
 	bufmap("n", "gs", vim.lsp.buf.signature_help, opts)
-	bufmap({ "n", "x" }, "<F3>", function()
-		conform.format({ async = true, lsp_fallback = true })
-	end, opts)
 end
 
 vim.api.nvim_create_autocmd("LspAttach", {
