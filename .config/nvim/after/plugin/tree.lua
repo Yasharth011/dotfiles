@@ -41,4 +41,5 @@ require("nvim-tree").setup({
 			return preview.scroll(-4)
 		end, opts("Scroll Up"))
 	end,
+	git = {ignore = true},
 })
